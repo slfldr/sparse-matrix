@@ -21,4 +21,4 @@ jobs:
             mkdir build
             cmake -Bbuild -G "Unix Makefiles"       
             cmake --build build
-            ./build/bin/test_SPARSE_MATRIX
+            ./build/bin/test_matrix
