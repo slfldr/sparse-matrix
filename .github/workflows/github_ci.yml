@@ -11,7 +11,7 @@ jobs:
             mkdir build
             cmake -Bbuild -G "Visual Studio 17 2022"       
             cmake --build build
-            .\build\bin\test_SPARSE_MATRIX.exe
+            .\build\bin\test_matrix.exe
     
   linux-build:
     runs-on: ubuntu-20.04
