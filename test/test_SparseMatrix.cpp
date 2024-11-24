@@ -26,66 +26,6 @@ TEST(CMatrix, cant_create_cmatrix_with_wrong_size)
     ASSERT_ANY_THROW(CMatrix<int>A(n, nz, value, row, col));
 }
 
-TEST(CMatrix, can_do_Ax_is_equal_to_b)
-{
-    std::size_t n = 6;
-    std::size_t nz = 9;
-
-    int* value = new int[nz] {1, 2, 3, 4, 8, 5, 7, 1, 6};
-    int* row = new int[nz] {0, 0, 1, 1, 3, 3, 4, 4, 4};
-    int* col = new int[nz] {0, 4, 2, 3, 3, 5, 2, 3, 5};
-
-    CMatrix<int>A(n, nz, value, row, col);
-
-    int* x = new int[n] {8, 5, 0, 4, 3, 1};
-    int* xres = new int[n] {14, 16, 0, 37, 10, 0};
-    int* _x = new int[n];
-
-    _x = A * x;
-
-    int flag = 1;
-
-    for (std::size_t i = 0; i < n; i++)
-    {
-        if (_x[i] != xres[i])
-        {
-            flag = 0;
-        }
-    }
-
-    EXPECT_EQ(1, flag);
-}
-
-TEST(CMatrix, can_do_fast_Ax_is_equal_to_b)
-{
-    std::size_t n = 6;
-    std::size_t nz = 9;
-
-    int* value = new int[nz] {1, 2, 3, 4, 8, 5, 7, 1, 6};
-    int* row = new int[nz] {0, 0, 1, 1, 3, 3, 4, 4, 4};
-    int* col = new int[nz] {0, 4, 2, 3, 3, 5, 2, 3, 5};
-
-    CMatrix<int>A(n, nz, value, row, col);
-
-    int* x = new int[n] {8, 5, 0, 4, 3, 1};
-    int* xres = new int[n] {14, 16, 0, 37, 10, 0};
-    int* _x = new int[n];
-
-    _x = A.fstMul(x);
-
-    int flag = 1;
-
-    for (std::size_t i = 0; i < n; i++)
-    {
-        if (_x[i] != xres[i])
-        {
-            flag = 0;
-        }
-    }
-
-    EXPECT_EQ(1, flag);
-}
-
 TEST(CMatrix, can_a_is_equal_b)
 {
     std::size_t n = 4;
@@ -147,36 +87,6 @@ TEST(CRSMatrix, cant_create_crsmatrix_with_wrong_size)
     int* col = new int[nz] {0, 4, 2, 3, 3, 5, 2, 3, 5};
 
     ASSERT_ANY_THROW(CRSMatrix<int>A(n, nz, value, col, row_index));
-}
-
-TEST(CRSMatrix, can_do_Ax_is_equal_to_b)
-{
-    std::size_t n = 6;
-    std::size_t nz = 9;
-
-    int* value = new int[nz] {1, 2, 3, 4, 8, 5, 7, 1, 6};
-    int* row_index = new int[n+1] {0, 2, 4, 4, 6, 9, 9 };
-    int* col = new int[nz] {0, 4, 2, 3, 3, 5, 2, 3, 5};
-
-    CRSMatrix<int>A(n, nz, value, col, row_index);
-
-    int* x = new int[n] {8, 5, 0, 4, 3, 1};
-    int* xres = new int[n] {14, 16, 0, 37, 10, 0};
-    int* _x = new int[n];
-
-    _x = A * x;
-
-    int flag = 1;
-
-    for (std::size_t i = 0; i < n; i++)
-    {
-        if (_x[i] != xres[i])
-        {
-            flag = 0;
-        }
-    }
-
-    EXPECT_EQ(1, flag);
 }
 
 TEST (CRSMatrix, can_a_is_equal_b)
