@@ -169,7 +169,7 @@ public:
         std::swap(lhs.col, rhs.col);
     }
 
-    T* operator*(const T* x)
+    T operator*(const T* x)
     {
         T* b = new T[n]{0};
 
@@ -180,7 +180,7 @@ public:
 
         return b;
     }
-    T* fstMul(const T* x)
+    T fstMul(const T* x)
     {
         T* b = new T[n]{0};
 
@@ -384,7 +384,7 @@ public:
         std::swap(lhs.col, rhs.col);
     }
 
-    T* operator*(const T* x)
+    T operator*(const T* x)
     {
         T* b = new T[n]{};
 
