@@ -3,10 +3,11 @@
 #define SparseMatrix_h
 
 #include <iostream>
+#include <vector>
 
 // Coordinate storage format
-template<typename T> class CMatrix 
-{ 
+template<typename T> class CMatrix
+{
 private:
     std::size_t n;
     std::size_t nz;
@@ -99,7 +100,7 @@ public:
         n = m.n;
         nz = m.nz;
     }
-    CMatrix(CMatrix&& m) noexcept 
+    CMatrix(CMatrix&& m) noexcept
     {
         value = nullptr;
         row = nullptr;
@@ -125,9 +126,9 @@ public:
             return *this;
         }
 
-        if(nz!=m.nz)
+        if (nz != m.nz)
         {
-            T* tmpv=new T[m.nz];
+            T* tmpv = new T[m.nz];
 
             int* tmpr = new int[m.nz];
             int* tmpc = new int[m.nz];
@@ -142,9 +143,9 @@ public:
         }
         else
         {
-            std::copy(m.value, m.value+m.nz, value);
-            std::copy(m.row, m.row+m.nz, row);
-            std::copy(m.col, m.col+m.nz, col);
+            std::copy(m.value, m.value + m.nz, value);
+            std::copy(m.row, m.row + m.nz, row);
+            std::copy(m.col, m.col + m.nz, col);
 
             n = m.n;
             nz = m.nz;
@@ -169,9 +170,9 @@ public:
         std::swap(lhs.col, rhs.col);
     }
 
-    T operator*(const T* x)
+    std::vector<T> operator*(const std::vector<T>& x)
     {
-        T* b = new T[n]{0};
+        std::vector<T> b(n, 0);
 
         for (std::size_t i = 0; i < nz; i++)
         {
@@ -180,15 +181,15 @@ public:
 
         return b;
     }
-    T fstMul(const T* x)
+    std::vector<T> fstMul(const std::vector<T>& x)
     {
-        T* b = new T[n]{0};
+        std::vector<T> b(n, 0);
 
         std::size_t j = 0;
 
-        for(std::size_t i = 0; i < n; i++)
-        { 
-            while(j<nz && row[j] == i)
+        for (std::size_t i = 0; i < n; i++)
+        {
+            while (j < nz && row[j] == i)
             {
                 b[i] += value[j] * x[col[j]];
                 j++;
@@ -242,7 +243,7 @@ public:
         }
         else
         {
-            value=new T[_nz];
+            value = new T[_nz];
 
             if (value == nullptr)
             {
@@ -264,7 +265,7 @@ public:
                 std::copy(_col, _col + _nz, col);
             }
 
-            row_index = new int[_n+1];
+            row_index = new int[_n + 1];
 
             if (row_index == nullptr)
             {
@@ -303,7 +304,7 @@ public:
             std::copy(m.col, m.col + m.nz, col);
         }
 
-        row_index = new int[m.n+1];
+        row_index = new int[m.n + 1];
 
         if (row_index == nullptr)
         {
@@ -342,10 +343,10 @@ public:
             return *this;
         }
 
-        if(nz!=m.nz)
+        if (nz != m.nz)
         {
             T* tmpv = new T[m.nz];
-            int* tmpr = new int[m.n+1];
+            int* tmpr = new int[m.n + 1];
             int* tmpc = new int[m.nz];
 
             delete[] value;
@@ -358,12 +359,12 @@ public:
         }
         else
         {
-            std::copy(m.value, m.value+m.nz, value);
-            std::copy(m.row_index, m.row_index+m.n+1, row_index);
-            std::copy(m.col, m.col + m.nz,col);
+            std::copy(m.value, m.value + m.nz, value);
+            std::copy(m.row_index, m.row_index + m.n + 1, row_index);
+            std::copy(m.col, m.col + m.nz, col);
 
-            n=m.n;
-            nz=m.nz;
+            n = m.n;
+            nz = m.nz;
         }
 
         return *this;
@@ -384,16 +385,16 @@ public:
         std::swap(lhs.col, rhs.col);
     }
 
-    T operator*(const T* x)
+    std::vector<T> operator*(const std::vector<T>& x)
     {
-        T* b = new T[n]{};
+        std::vector<T> b(n, 0);
 
-        for(std::size_t i = 0; i < n; i++)
+        for (std::size_t i = 0; i < n; i++)
         {
-            for(std::size_t j = row_index[i]; j < row_index[i+1]; j++)
+            for (std::size_t j = row_index[i]; j < row_index[i + 1]; j++)
             {
                 b[i] += value[j] * x[col[j]];
-            } 
+            }
         }
 
         return b;
